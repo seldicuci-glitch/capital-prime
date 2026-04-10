@@ -5,42 +5,31 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Capital Prime — Estates Albania</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
-  --gold: #C6A962;
-  --gold-light: #D4BE82;
-  --gold-dim: rgba(198,169,98,0.15);
-  --black: #0A0A0A;
-  --dark: #111111;
-  --dark-mid: #1A1A1A;
+  --black: #1A1A1A;
   --white: #FFFFFF;
-  --white-off: #F5F5F5;
-  --gray: #757575;
-  --gray-light: #BBBBBB;
-  --text: #262626;
-  --font: 'Inter', Helvetica, Arial, sans-serif;
+  --cream: #F5F5F0;
+  --gray: #666666;
+  --light-gray: #F0F0F0;
+  --gold: #C6A962;
+  --serif: 'Playfair Display', Georgia, serif;
+  --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 html { scroll-behavior: smooth; }
 
 body {
-  font-family: var(--font);
+  font-family: var(--sans);
   font-weight: 400;
-  background: var(--black);
-  color: var(--white);
+  background: var(--white);
+  color: var(--black);
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
-  line-height: 1.20;
-}
-
-/* ===== ZERO BORDER RADIUS — ENFORCED ===== */
-*, *::before, *::after {
-  border-radius: 0 !important;
+  line-height: 1.6;
 }
 
 /* ===== NAVIGATION ===== */
@@ -50,65 +39,76 @@ nav {
   width: 100%;
   z-index: 1000;
   padding: 0 48px;
-  height: 64px;
+  height: 72px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: rgba(10,10,10,0.85);
+  background: rgba(255,255,255,0.95);
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
-  border-bottom: 1px solid rgba(198,169,98,0.06);
-  transition: all 0.3s;
+  transition: box-shadow 0.3s;
+}
+
+nav.scrolled {
+  box-shadow: 0 1px 20px rgba(0,0,0,0.06);
 }
 
 .nav-logo {
-  font-family: var(--font);
-  font-size: 13px;
-  font-weight: 900;
-  color: var(--gold);
-  letter-spacing: 6px;
+  font-family: var(--sans);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--black);
+  letter-spacing: 4px;
   text-transform: uppercase;
 }
 
-.nav-links {
+.nav-center {
   display: flex;
   gap: 36px;
   list-style: none;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.nav-center a {
+  color: var(--black);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 400;
+  transition: color 0.3s;
+}
+
+.nav-center a:hover { color: var(--gray); }
+
+.nav-right {
+  display: flex;
   align-items: center;
 }
 
-.nav-links a {
-  color: var(--gray-light);
-  text-decoration: none;
-  font-size: 13px;
-  font-weight: 900;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  transition: color 0.3s;
-  line-height: 1.30;
-}
-
-.nav-links a:hover { color: var(--white); }
-
 .nav-cta {
-  background: var(--gold) !important;
-  color: var(--black) !important;
-  padding: 10px 24px !important;
-  font-weight: 700 !important;
-  letter-spacing: 2px !important;
+  background: var(--black);
+  color: var(--white) !important;
+  padding: 10px 24px;
+  border-radius: 25px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  transition: all 0.3s;
   display: inline-block;
-  transition: all 0.3s !important;
 }
 
 .nav-cta:hover {
-  background: var(--gold-light) !important;
+  background: #333;
+  transform: translateY(-1px);
 }
 
 .nav-menu-btn {
   display: none;
   background: none;
   border: none;
-  color: var(--white);
+  color: var(--black);
   font-size: 24px;
   cursor: pointer;
   width: 48px;
@@ -118,411 +118,535 @@ nav {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* Mobile nav */
 @media (max-width: 768px) {
   nav { padding: 0 20px; }
-  .nav-links {
+  .nav-center {
     display: flex;
     flex-direction: column;
     position: absolute;
-    top: 64px;
+    top: 72px;
     left: 0;
     right: 0;
-    background: rgba(10,10,10,0.97);
-    backdrop-filter: blur(20px);
+    background: rgba(255,255,255,0.98);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
     padding: 0 20px;
     gap: 0;
     max-height: 0;
     overflow: hidden;
     opacity: 0;
+    transform: none;
+    left: 0;
     transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease, padding 0.3s ease;
-    border-bottom: 1px solid transparent;
   }
-  .nav-links.show {
+  .nav-center.show {
     max-height: 400px;
     opacity: 1;
     padding: 12px 20px 20px;
-    border-bottom: 1px solid rgba(198,169,98,0.08);
+    border-bottom: 1px solid var(--light-gray);
   }
-  .nav-links li { list-style: none; }
-  .nav-links a {
+  .nav-center a {
     display: block;
-    padding: 16px 0;
-    font-size: 14px;
-    border-bottom: 1px solid rgba(255,255,255,0.04);
+    padding: 14px 0;
+    font-size: 15px;
+    border-bottom: 1px solid var(--light-gray);
   }
-  .nav-links li:last-child a { border-bottom: none; }
-  .nav-links .nav-cta {
-    display: inline-block;
-    margin-top: 8px;
-    text-align: center;
-    padding: 16px 24px !important;
-    min-height: 48px;
-  }
+  .nav-center li:last-child a { border-bottom: none; }
+  .nav-right { display: none; }
   .nav-menu-btn { display: flex; align-items: center; justify-content: center; }
 }
 
-/* ===== HERO — DARK FULL-BLEED ===== */
+/* ===== HERO ===== */
 .hero {
-  position: relative;
   min-height: 100vh;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 120px 24px 80px;
+  padding: 120px 48px 80px;
+  position: relative;
   overflow: hidden;
-  background: var(--black);
+  background: var(--white);
 }
 
-#hero-three-canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
+.hero-inner {
+  max-width: 1200px;
+  margin: 0 auto;
   width: 100%;
-  height: 100%;
-  z-index: 0;
+  display: grid;
+  grid-template-columns: 55% 45%;
+  align-items: center;
+  gap: 48px;
 }
 
-/* Geometric overlay grid */
-.hero-geo-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 1;
-  pointer-events: none;
-  background:
-    linear-gradient(0deg, rgba(10,10,10,0.9) 0%, transparent 30%, transparent 70%, rgba(10,10,10,0.7) 100%),
-    repeating-linear-gradient(90deg, transparent, transparent 119px, rgba(198,169,98,0.03) 119px, rgba(198,169,98,0.03) 120px),
-    repeating-linear-gradient(0deg, transparent, transparent 119px, rgba(198,169,98,0.03) 119px, rgba(198,169,98,0.03) 120px);
-}
-
-.hero-content {
+.hero-text {
   position: relative;
   z-index: 2;
-  max-width: 800px;
-}
-
-.hero-crown {
-  width: 48px;
-  height: 48px;
-  margin: 0 auto 32px;
-  opacity: 0;
-  animation: fadeUp 1s 0.2s forwards;
-}
-
-.hero-crown svg { width: 100%; height: 100%; }
-
-.hero-eyebrow {
-  font-size: 13px;
-  font-weight: 900;
-  letter-spacing: 6px;
-  text-transform: uppercase;
-  color: var(--gold);
-  margin-bottom: 24px;
-  opacity: 0;
-  animation: fadeUp 1s 0.4s forwards;
-  line-height: 1.30;
 }
 
 .hero h1 {
-  font-family: var(--font);
-  font-size: clamp(40px, 8vw, 80px);
-  font-weight: 300;
+  font-family: var(--serif);
+  font-size: clamp(36px, 4.5vw, 56px);
+  font-weight: 400;
   line-height: 1.15;
-  letter-spacing: -0.5px;
-  text-transform: uppercase;
+  color: var(--black);
   margin-bottom: 24px;
   opacity: 0;
-  animation: fadeUp 1s 0.6s forwards;
-  color: var(--white);
-}
-
-.hero h1 em {
-  font-style: normal;
-  color: var(--gold);
+  animation: fadeUp 0.8s 0.2s forwards;
 }
 
 .hero-sub {
-  font-size: clamp(16px, 2vw, 18px);
+  font-family: var(--sans);
+  font-size: 16px;
   font-weight: 400;
-  color: var(--gray-light);
-  max-width: 540px;
-  margin: 0 auto 48px;
-  line-height: 1.30;
+  color: var(--gray);
+  max-width: 480px;
+  line-height: 1.7;
+  margin-bottom: 40px;
   opacity: 0;
-  animation: fadeUp 1s 0.8s forwards;
+  animation: fadeUp 0.8s 0.4s forwards;
 }
 
 .hero-buttons {
   display: flex;
-  gap: 16px;
-  justify-content: center;
+  align-items: center;
+  gap: 28px;
   opacity: 0;
-  animation: fadeUp 1s 1s forwards;
+  animation: fadeUp 0.8s 0.6s forwards;
 }
 
-.btn-primary {
-  background: var(--gold);
-  color: var(--black);
-  padding: 16px 36px;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 2px;
+.btn-pill {
+  background: var(--black);
+  color: var(--white);
+  padding: 14px 28px;
+  border-radius: 25px;
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 1px;
   text-transform: uppercase;
   text-decoration: none;
-  transition: all 0.3s;
   border: none;
   cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 48px;
-}
-
-.btn-primary:hover { background: var(--gold-light); }
-
-.btn-secondary {
-  background: transparent;
-  color: var(--gold);
-  padding: 16px 36px;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  text-decoration: none;
-  border: 1px solid rgba(198,169,98,0.3);
   transition: all 0.3s;
   display: inline-flex;
   align-items: center;
+}
+
+.btn-pill:hover {
+  background: #333;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+
+.btn-text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--black);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.btn-text-link:hover { color: var(--gray); }
+
+.play-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1.5px solid var(--black);
+  display: flex;
+  align-items: center;
   justify-content: center;
-  min-height: 48px;
+  transition: all 0.3s;
 }
 
-.btn-secondary:hover { border-color: var(--gold); background: rgba(198,169,98,0.06); }
+.play-circle svg { margin-left: 2px; }
 
-.hero-scroll {
-  position: absolute;
-  bottom: 40px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 2;
+.btn-text-link:hover .play-circle {
+  background: var(--black);
+}
+
+.btn-text-link:hover .play-circle svg path { fill: var(--white); }
+
+.hero-visual {
+  position: relative;
   opacity: 0;
-  animation: fadeUp 1s 1.2s forwards;
+  animation: fadeUp 0.8s 0.5s forwards;
 }
 
-.hero-scroll span {
-  display: block;
-  width: 1px;
-  height: 48px;
-  background: linear-gradient(to bottom, var(--gold), transparent);
-  margin: 0 auto;
-  animation: scrollLine 2s ease-in-out infinite;
-}
-
-/* ===== SECTION SYSTEM — ALTERNATING DARK/WHITE ===== */
-.section-dark {
-  background: var(--dark);
-  color: var(--white);
-  padding: 120px 24px;
-  position: relative;
-  overflow: hidden;
-}
-
-.section-white {
-  background: var(--white);
-  color: var(--text);
-  padding: 120px 24px;
-  position: relative;
-  overflow: hidden;
-}
-
-.section-inner {
-  max-width: 1120px;
-  margin: 0 auto;
-}
-
-.section-label {
-  font-size: 11px;
-  font-weight: 900;
-  letter-spacing: 5px;
-  text-transform: uppercase;
-  color: var(--gold);
-  margin-bottom: 16px;
-  line-height: 1.30;
-}
-
-.section-title {
-  font-family: var(--font);
-  font-size: clamp(32px, 5vw, 60px);
-  font-weight: 300;
-  line-height: 1.15;
-  text-transform: uppercase;
-  margin-bottom: 20px;
-}
-
-.section-dark .section-title { color: var(--white); }
-.section-white .section-title { color: var(--text); }
-
-.section-desc {
-  font-size: 17px;
-  font-weight: 400;
-  max-width: 600px;
-  line-height: 1.30;
-  margin-bottom: 56px;
-}
-
-.section-dark .section-desc { color: var(--gray-light); }
-.section-white .section-desc { color: var(--gray); }
-
-/* ===== DIVIDERS ===== */
-.section-divider {
+.hero-blob {
   width: 100%;
-  height: 1px;
-  background: linear-gradient(to right, transparent, rgba(198,169,98,0.12), transparent);
+  aspect-ratio: 1;
+  border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  background: #D5CFC8;
+  position: relative;
+  overflow: hidden;
+  animation: blobMorph 12s ease-in-out infinite;
+}
+
+.hero-blob img.hero-photo {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  filter: grayscale(100%) contrast(1.1);
+}
+
+.hero-blob video {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 100%; min-height: 100%;
+  width: auto; height: auto;
+  object-fit: cover;
+}
+
+@keyframes blobMorph {
+  0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+  25% { border-radius: 50% 50% 40% 60% / 40% 60% 50% 50%; }
+  50% { border-radius: 40% 60% 50% 50% / 50% 40% 60% 50%; }
+  75% { border-radius: 55% 45% 45% 55% / 55% 50% 50% 45%; }
+}
+
+/* ===== STATS BAR ===== */
+.stats-bar {
+  max-width: 1200px;
+  margin: -40px auto 0;
+  padding: 0 48px;
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+}
+
+.stats-who {
+  background: var(--black);
+  background-image: linear-gradient(rgba(26,26,26,0.75), rgba(26,26,26,0.85)), url('https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80');
+  background-size: cover;
+  background-position: center;
+  color: var(--white);
+  padding: 36px 32px;
+  min-width: 220px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 12px 0 0 12px;
+}
+
+.stats-who h3 {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.stats-who a {
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.3s;
+}
+
+.stats-who a:hover { color: var(--white); }
+
+.stats-numbers {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background: var(--white);
+  border: 1px solid var(--light-gray);
+  border-left: none;
+  border-radius: 0 12px 12px 0;
+  padding: 28px 24px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+}
+
+.stat-item {
+  text-align: center;
+  padding: 0 20px;
+  position: relative;
+}
+
+.stat-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1px;
+  height: 40px;
+  background: var(--light-gray);
+}
+
+.stat-number {
+  font-family: var(--sans);
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--black);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.stat-label {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--gray);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* ===== SECTION COMMON ===== */
+.section {
   position: relative;
   z-index: 1;
 }
 
-/* ===== STATS — 3D FLIP ===== */
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1px;
-  margin-top: 64px;
-  background: rgba(198,169,98,0.06);
+.section-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 120px 48px;
 }
 
-.stat-card {
-  background: var(--dark);
-  padding: 48px 32px;
-  text-align: center;
-  transition: background 0.4s;
-  perspective: 600px;
-}
-
-.stat-card:hover { background: var(--dark-mid); }
-
-.stat-inner {
-  transform-style: preserve-3d;
-  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.stat-card.flipped .stat-inner {
-  transform: rotateX(360deg);
-}
-
-.stat-number {
-  font-family: var(--font);
-  font-size: 48px;
-  font-weight: 300;
-  color: var(--gold);
-  line-height: 1.15;
-  margin-bottom: 4px;
-}
-
-.stat-unit {
-  font-size: 18px;
-  font-weight: 300;
-  color: var(--gold-light);
-}
-
-.stat-label {
-  font-size: 14px;
-  font-weight: 400;
-  color: var(--gray);
-  margin-top: 8px;
-  line-height: 1.30;
+.section-label {
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 4px;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  color: var(--gray);
+  margin-bottom: 16px;
 }
 
-/* ===== ADVANTAGES ===== */
-.advantage-list {
+.section-title {
+  font-family: var(--serif);
+  font-size: clamp(28px, 3.5vw, 40px);
+  font-weight: 400;
+  line-height: 1.2;
+  margin-bottom: 20px;
+  color: var(--black);
+}
+
+.section-desc {
+  font-size: 16px;
+  color: var(--gray);
+  line-height: 1.7;
+  max-width: 560px;
+}
+
+.bg-cream { background: var(--cream); }
+.bg-white { background: var(--white); }
+
+/* ===== WHY US ===== */
+.why-tabs {
+  display: flex;
+  gap: 32px;
+  margin-bottom: 48px;
+  border-bottom: 1px solid var(--light-gray);
+  padding-bottom: 16px;
+}
+
+.why-tab {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--gray);
+  cursor: pointer;
+  padding-bottom: 4px;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -17px;
+  transition: all 0.3s;
+  background: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  font-family: var(--sans);
+}
+
+.why-tab.active, .why-tab:hover {
+  color: var(--black);
+  border-bottom-color: var(--black);
+}
+
+.why-content {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1px;
-  background: rgba(38,38,38,0.15);
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
 }
 
-.advantage-item {
-  padding: 48px 40px;
-  background: var(--white);
-  transition: all 0.4s;
+.why-image {
+  width: 100%;
+  aspect-ratio: 4/5;
+  border-radius: 50% 50% 40% 60% / 40% 60% 50% 50%;
+  background: #C8C2B8;
+  animation: blobMorph2 15s ease-in-out infinite;
+  overflow: hidden;
   position: relative;
 }
 
-.advantage-item::after {
-  content: '';
+.why-image img {
   position: absolute;
-  bottom: 0;
-  left: 40px;
-  right: 40px;
-  height: 2px;
-  background: var(--gold);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  filter: grayscale(100%);
 }
 
-.advantage-item:hover::after {
-  transform: scaleX(1);
+@keyframes blobMorph2 {
+  0%, 100% { border-radius: 50% 50% 40% 60% / 40% 60% 50% 50%; }
+  33% { border-radius: 45% 55% 50% 50% / 55% 45% 55% 45%; }
+  66% { border-radius: 55% 45% 45% 55% / 50% 50% 45% 55%; }
 }
 
-.advantage-item:hover {
-  background: var(--white-off);
+.why-text h3 {
+  font-family: var(--serif);
+  font-size: clamp(24px, 2.5vw, 32px);
+  font-weight: 400;
+  line-height: 1.25;
+  margin-bottom: 20px;
+  color: var(--black);
 }
 
-.advantage-icon {
-  font-size: 28px;
-  margin-bottom: 24px;
-  display: block;
-}
-
-.advantage-item h3 {
-  font-size: 22px;
-  font-weight: 300;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 12px;
-  line-height: 1.20;
-  color: var(--text);
-}
-
-.advantage-item p {
+.why-text p {
   font-size: 15px;
   color: var(--gray);
-  line-height: 1.30;
+  line-height: 1.7;
+  margin-bottom: 32px;
 }
 
-/* ===== PORTFOLIO — 3D TILT CARDS ===== */
+.btn-outline {
+  display: inline-block;
+  padding: 12px 28px;
+  border: 1px solid var(--black);
+  color: var(--black);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.3s;
+  border-radius: 25px;
+}
+
+.btn-outline:hover {
+  background: var(--black);
+  color: var(--white);
+  transform: translateY(-2px);
+}
+
+/* ===== SERVICES ===== */
+.services-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 48px;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.service-card {
+  background: var(--white);
+  padding: 36px 28px;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  transition: all 0.3s;
+  border: 1px solid rgba(0,0,0,0.04);
+}
+
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 36px rgba(0,0,0,0.08);
+}
+
+.service-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--light-gray);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  margin-bottom: 24px;
+}
+
+.service-card h3 {
+  font-family: var(--sans);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--black);
+  margin-bottom: 12px;
+}
+
+.service-card p {
+  font-size: 14px;
+  color: var(--gray);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.service-link {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--black);
+  text-decoration: none;
+  letter-spacing: 0.5px;
+  transition: color 0.3s;
+}
+
+.service-link:hover { color: var(--gray); }
+
+/* ===== PORTFOLIO ===== */
+.portfolio-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 48px;
+}
+
+.explore-link {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--black);
+  text-decoration: none;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: color 0.3s;
+}
+
+.explore-link:hover { color: var(--gray); }
+
 .portfolio-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 2px;
+  gap: 28px;
 }
 
 .property-card {
-  background: var(--dark);
+  border-radius: 16px;
   overflow: hidden;
+  background: var(--white);
+  box-shadow: 0 2px 16px rgba(0,0,0,0.05);
+  transition: all 0.3s;
   cursor: pointer;
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  transform-style: preserve-3d;
-  perspective: 1000px;
-  position: relative;
 }
 
-.property-card-inner {
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  transform-style: preserve-3d;
+.property-card:hover {
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.1);
 }
 
 .property-img {
   width: 100%;
   aspect-ratio: 4/3;
-  background: linear-gradient(135deg, #0A1628, #132240);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -531,16 +655,30 @@ nav {
   overflow: hidden;
 }
 
+.property-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.property-card:hover .property-img img {
+  transform: scale(1.05);
+}
+
 .property-badge {
   position: absolute;
-  top: 0;
-  left: 0;
-  background: var(--gold);
+  top: 16px;
+  left: 16px;
+  background: var(--white);
   color: var(--black);
-  padding: 8px 16px;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 2px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
   text-transform: uppercase;
 }
 
@@ -549,144 +687,176 @@ nav {
 }
 
 .property-location {
-  font-size: 10px;
-  font-weight: 900;
-  color: var(--gold);
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  margin-bottom: 8px;
-  line-height: 1.30;
+  font-size: 12px;
+  color: var(--gray);
+  margin-bottom: 6px;
 }
 
 .property-name {
-  font-size: 22px;
-  font-weight: 300;
-  text-transform: uppercase;
+  font-family: var(--sans);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--black);
   margin-bottom: 8px;
-  line-height: 1.20;
-  color: var(--white);
 }
 
 .property-details {
   font-size: 14px;
   color: var(--gray);
-  line-height: 1.30;
+  line-height: 1.5;
+  margin-bottom: 16px;
 }
 
 .property-price {
-  font-size: 22px;
-  font-weight: 300;
-  color: var(--gold);
-  margin-top: 16px;
+  font-family: var(--sans);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--black);
   padding-top: 16px;
-  border-top: 1px solid rgba(198,169,98,0.1);
-  line-height: 1.20;
+  border-top: 1px solid var(--light-gray);
 }
 
-/* ===== PROCESS / SERVICES ===== */
-.services-flow {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1px;
-  margin-top: 64px;
-  background: rgba(198,169,98,0.06);
-}
-
-.service-step {
-  background: var(--white);
-  padding: 48px 32px;
+/* ===== PROCESS ===== */
+.process-section .section-inner {
   text-align: center;
-  transition: all 0.4s;
+}
+
+.process-flow {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 64px;
   position: relative;
 }
 
-.service-step:hover {
-  background: var(--white-off);
+.process-flow::before {
+  content: '';
+  position: absolute;
+  top: 32px;
+  left: 80px;
+  right: 80px;
+  height: 1px;
+  background: var(--light-gray);
+}
+
+.process-step {
+  flex: 1;
+  text-align: center;
+  position: relative;
+  z-index: 1;
 }
 
 .step-num {
-  font-size: 48px;
-  font-weight: 300;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 1.5px solid var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24px;
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 500;
   color: var(--gold);
-  line-height: 1;
-  margin-bottom: 24px;
-  display: block;
+  background: var(--white);
+  transition: all 0.3s;
 }
 
-.service-step h3 {
-  font-size: 18px;
-  font-weight: 300;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 12px;
-  line-height: 1.20;
-  color: var(--text);
+.process-step:hover .step-num {
+  background: var(--gold);
+  color: var(--white);
 }
 
-.service-step p {
+.process-step h3 {
+  font-family: var(--sans);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--black);
+  margin-bottom: 8px;
+}
+
+.process-step p {
   font-size: 14px;
   color: var(--gray);
-  line-height: 1.30;
+  line-height: 1.6;
+  max-width: 200px;
+  margin: 0 auto;
 }
 
 /* ===== CONTACT ===== */
-.contact-section {
-  background: var(--dark);
-  padding: 120px 24px;
-  position: relative;
-  overflow: hidden;
-}
-
-.contact-inner {
-  max-width: 560px;
-  margin: 0 auto;
+.contact-section .section-inner {
   text-align: center;
+  max-width: 800px;
 }
 
 .contact-form {
+  max-width: 560px;
+  margin: 48px auto 0;
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  text-align: left;
+  gap: 0;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
 }
 
 .contact-form input,
 .contact-form textarea,
 .contact-form select {
   width: 100%;
-  padding: 18px 20px;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(198,169,98,0.1);
-  color: var(--white);
-  font-family: var(--font);
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 1.20;
-  transition: all 0.3s;
+  padding: 16px 0;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #DDD;
+  color: var(--black);
+  font-family: var(--sans);
+  font-size: 15px;
+  transition: border-color 0.3s;
   outline: none;
+  margin-bottom: 8px;
 }
 
 .contact-form input:focus,
 .contact-form textarea:focus,
 .contact-form select:focus {
-  border-color: var(--gold);
-  background: rgba(198,169,98,0.03);
+  border-bottom-color: var(--black);
 }
 
 .contact-form input::placeholder,
 .contact-form textarea::placeholder {
-  color: var(--gray);
+  color: #AAA;
 }
 
-.contact-form select { cursor: pointer; }
-.contact-form select option { background: var(--dark); }
-.contact-form textarea { min-height: 120px; resize: vertical; }
+.contact-form select {
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23999' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 4px center;
+  color: #AAA;
+  border-radius: 0;
+}
+
+.contact-form select:valid { color: var(--black); }
+.contact-form select option { color: var(--black); background: var(--white); }
+.contact-form textarea { min-height: 100px; resize: vertical; }
+
+.contact-form .btn-pill {
+  margin-top: 24px;
+  align-self: center;
+  padding: 16px 36px;
+}
 
 .contact-channels {
   display: flex;
-  gap: 32px;
+  gap: 36px;
   justify-content: center;
-  margin-top: 56px;
+  margin-top: 48px;
   flex-wrap: wrap;
 }
 
@@ -695,75 +865,87 @@ nav {
   align-items: center;
   gap: 8px;
   color: var(--gray);
-  font-size: 13px;
-  font-weight: 400;
+  font-size: 14px;
   text-decoration: none;
   transition: color 0.3s;
-  letter-spacing: 0.5px;
-  min-height: 48px;
 }
 
-.contact-channel:hover { color: var(--gold); }
+.contact-channel:hover { color: var(--black); }
 
 /* ===== FOOTER ===== */
 footer {
-  padding: 48px 24px;
-  text-align: center;
-  border-top: 1px solid rgba(198,169,98,0.06);
   background: var(--black);
+  padding: 0 48px;
   position: relative;
   z-index: 1;
 }
 
-.footer-logo {
-  font-size: 11px;
-  font-weight: 900;
-  letter-spacing: 5px;
+.footer-gold-line {
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--gold), transparent);
+  opacity: 0.3;
+}
+
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 48px;
+  padding: 64px 0 48px;
+}
+
+.footer-brand .footer-logo {
+  font-family: var(--sans);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: 3px;
   text-transform: uppercase;
-  color: var(--gold);
   margin-bottom: 16px;
 }
 
-footer p {
-  font-size: 12px;
-  color: var(--gray);
-  line-height: 1.30;
+.footer-brand p {
+  font-size: 14px;
+  color: #999;
+  line-height: 1.7;
+  max-width: 300px;
 }
 
-/* ===== SECRET SOCIETY ELEMENTS — even more subtle ===== */
-.conspiracy-element {
-  position: fixed;
-  pointer-events: none;
-  z-index: 0;
-  color: var(--gold);
-  transition: opacity 2s ease;
-}
-
-.latin-phrase {
-  font-family: var(--font);
-  font-weight: 300;
-  letter-spacing: 4px;
+.footer-col h4 {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--white);
+  letter-spacing: 2px;
   text-transform: uppercase;
-  opacity: 0.015;
-  white-space: nowrap;
+  margin-bottom: 20px;
 }
 
-.roman-numeral {
-  font-family: var(--font);
-  font-weight: 300;
-  opacity: 0.012;
-  letter-spacing: 6px;
+.footer-col a {
+  display: block;
+  color: #999;
+  text-decoration: none;
+  font-size: 14px;
+  padding: 4px 0;
+  transition: color 0.3s;
 }
 
-/* ===== PARALLAX DEPTH LAYERS ===== */
-.parallax-layer {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
-  will-change: transform;
+.footer-col a:hover { color: var(--white); }
+
+.footer-bottom {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 0;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-bottom p {
+  font-size: 13px;
+  color: rgba(255,255,255,0.35);
 }
 
 /* ===== ANIMATIONS ===== */
@@ -772,20 +954,10 @@ footer p {
   to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes scrollLine {
-  0%, 100% { opacity: 0.3; transform: scaleY(0.5); transform-origin: top; }
-  50% { opacity: 1; transform: scaleY(1); }
-}
-
-@keyframes slideInLeft {
-  from { opacity: 0; transform: translateX(-60px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-
 .reveal {
   opacity: 0;
-  transform: translateY(40px);
-  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform: translateY(30px);
+  transition: all 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .reveal.visible {
@@ -793,98 +965,131 @@ footer p {
   transform: translateY(0);
 }
 
-.reveal-stagger > * {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+/* ===== SECRET SOCIETY ELEMENTS ===== */
+.conspiracy-element {
+  position: fixed;
+  pointer-events: none;
+  z-index: 0;
+  color: var(--gold);
+  transition: opacity 1.5s ease;
 }
 
-.reveal-stagger.visible > *:nth-child(1) { transition-delay: 0.05s; opacity: 1; transform: translateY(0); }
-.reveal-stagger.visible > *:nth-child(2) { transition-delay: 0.15s; opacity: 1; transform: translateY(0); }
-.reveal-stagger.visible > *:nth-child(3) { transition-delay: 0.25s; opacity: 1; transform: translateY(0); }
-.reveal-stagger.visible > *:nth-child(4) { transition-delay: 0.35s; opacity: 1; transform: translateY(0); }
+.eye-providence { opacity: 0.035; }
 
-/* ===== GEOMETRIC PARTICLE BG (angular) ===== */
-#bg-canvas {
+.latin-phrase {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  opacity: 0.03;
+  white-space: nowrap;
+}
+
+.roman-numeral {
+  font-family: var(--serif);
+  font-weight: 700;
+  opacity: 0.025;
+  letter-spacing: 6px;
+}
+
+.compass-rose {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  bottom: 10%;
+  left: 5%;
+  width: 160px;
+  height: 160px;
   z-index: 0;
   pointer-events: none;
+  opacity: 0.035;
+  animation: compassSpin 60s linear infinite;
 }
 
-/* Ensure all content above canvas */
-nav, .hero, .section-dark, .section-white, .contact-section, footer, .section-divider {
-  position: relative;
-  z-index: 1;
+@keyframes compassSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Sound toggle — restyled minimal */
+#soundToggle {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid #DDD;
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: var(--black);
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+
+#soundToggle:hover {
+  border-color: var(--black);
+  transform: scale(1.05);
 }
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 1024px) {
+  .services-grid { grid-template-columns: repeat(2, 1fr); }
   .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
-  .services-flow { grid-template-columns: repeat(2, 1fr); }
+  .process-flow { flex-wrap: wrap; }
+  .process-step { flex: 1 1 45%; }
+  .footer-inner { grid-template-columns: 1fr 1fr; gap: 32px; }
 }
 
 @media (max-width: 768px) {
-  .section-dark, .section-white { padding: 80px 20px; }
-  .contact-section { padding: 80px 20px; }
-  
+  .section-inner { padding: 80px 20px; }
+  footer { padding: 0 20px; }
+
   .hero { padding: 100px 20px 60px; min-height: 100svh; }
-  .hero h1 { font-size: 36px; }
-  .hero-sub { font-size: 15px; margin-bottom: 36px; }
-  .hero-eyebrow { font-size: 11px; letter-spacing: 4px; }
-  .hero-buttons { flex-direction: column; width: 100%; max-width: 300px; }
-  .btn-primary, .btn-secondary { text-align: center; padding: 18px 28px; min-height: 52px; width: 100%; justify-content: center; }
-  
-  .section-title { font-size: 28px; }
-  .section-desc { font-size: 15px; margin-bottom: 40px; }
-  .section-label { font-size: 10px; letter-spacing: 4px; }
+  .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+  .hero h1 { font-size: clamp(32px, 7vw, 44px); }
+  .hero-sub { font-size: 15px; }
+  .hero-buttons { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .hero-blob { max-width: 320px; margin: 0 auto; }
 
-  .stats-grid { grid-template-columns: repeat(2, 1fr); }
-  .stat-card { padding: 28px 16px; }
-  .stat-number { font-size: 36px; }
-  .stat-unit { font-size: 14px; }
-  .stat-label { font-size: 12px; }
+  .stats-bar { flex-direction: column; padding: 0 20px; margin-top: 0; }
+  .stats-who { border-radius: 12px 12px 0 0; min-width: auto; padding: 28px 24px; }
+  .stats-numbers { border-radius: 0 0 12px 12px; border-left: 1px solid var(--light-gray); flex-wrap: wrap; padding: 20px 16px; gap: 16px; }
+  .stat-item { flex: 1 1 30%; min-width: 80px; }
+  .stat-item::after { display: none; }
 
-  .advantage-list { grid-template-columns: 1fr; }
-  .advantage-item { padding: 32px 24px; }
-  .advantage-item h3 { font-size: 18px; }
-  .advantage-item p { font-size: 14px; }
+  .why-tabs { gap: 16px; overflow-x: auto; flex-wrap: nowrap; }
+  .why-content { grid-template-columns: 1fr; gap: 32px; }
+  .why-image { max-width: 280px; margin: 0 auto; }
 
+  .services-grid { grid-template-columns: 1fr; }
   .portfolio-grid { grid-template-columns: 1fr; }
-  .property-info { padding: 20px; }
-  .property-name { font-size: 20px; }
-  .property-price { font-size: 20px; }
 
-  .services-flow { grid-template-columns: 1fr; }
-  .service-step { padding: 32px 24px; text-align: left; display: flex; align-items: flex-start; gap: 20px; }
-  .step-num { font-size: 36px; margin-bottom: 0; min-width: 48px; }
-  .service-step h3 { font-size: 16px; }
-  .service-step p { font-size: 13px; }
+  .process-flow { flex-direction: column; gap: 28px; }
+  .process-flow::before { display: none; }
+  .process-step { text-align: left; display: flex; align-items: flex-start; gap: 20px; }
+  .step-num { margin: 0; width: 52px; height: 52px; min-width: 52px; font-size: 18px; }
+  .process-step p { max-width: none; }
 
-  .contact-form input,
-  .contact-form textarea,
-  .contact-form select {
-    font-size: 16px;
-    padding: 16px 16px;
-    min-height: 48px;
-  }
-  .contact-form textarea { min-height: 100px; }
-
+  .form-row { grid-template-columns: 1fr; gap: 0; }
   .contact-channels { flex-direction: column; align-items: center; gap: 16px; }
 
-  /* Hide conspiracy on mobile */
-  .conspiracy-element { display: none; }
+  .footer-inner { grid-template-columns: 1fr; gap: 32px; }
+  .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+
+  .compass-rose { width: 100px; height: 100px; opacity: 0.025; }
+  .conspiracy-element { opacity: 0.015 !important; }
 }
 
 @media (max-width: 480px) {
-  .hero h1 { font-size: 30px; }
-  .hero-crown { width: 36px; height: 36px; margin-bottom: 24px; }
+  .hero h1 { font-size: 28px; }
   .section-title { font-size: 24px; }
-  .stats-grid { grid-template-columns: repeat(2, 1fr); }
-  .stat-number { font-size: 30px; }
 }
 
 /* Touch-friendly */
@@ -892,212 +1097,227 @@ nav, .hero, .section-dark, .section-white, .contact-section, footer, .section-di
   a, button, select, .property-card { min-height: 48px; }
   .contact-channel { padding: 8px 0; }
 }
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal { opacity: 1; transform: none; }
+  .hero h1, .hero-sub, .hero-buttons, .hero-visual { opacity: 1; transform: none; }
+}
 </style>
 </head>
 <body>
 
-<!-- GEOMETRIC PARTICLE BACKGROUND -->
-<canvas id="bg-canvas"></canvas>
-
 <!-- NAV -->
 <nav>
   <div class="nav-logo">Capital Prime</div>
-  <ul class="nav-links">
-    <li><a href="#why">Why Albania</a></li>
-    <li><a href="#advantage">Advantage</a></li>
-    <li><a href="#portfolio">Portfolio</a></li>
-    <li><a href="#process">Process</a></li>
-    <li><a href="#contact" class="nav-cta">Inquire</a></li>
+  <ul class="nav-center" id="navLinks">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#portfolio">Properties</a></li>
+    <li><a href="#about">About</a></li>
   </ul>
+  <div class="nav-right">
+    <a href="#contact" class="nav-cta">Contact Us</a>
+  </div>
   <button class="nav-menu-btn" id="menuBtn" aria-label="Menu">☰</button>
 </nav>
 
-<!-- HERO — DARK WITH THREE.JS WIREFRAME -->
-<section class="hero">
-  <canvas id="hero-three-canvas"></canvas>
-  <div class="hero-geo-overlay"></div>
-  
-  <div class="hero-content">
-    <div class="hero-crown">
-      <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M8 36h32v4H8z" fill="#C6A962"/>
-        <path d="M10 18l4 14h20l4-14-7 8-7-14-7 14-7-8z" fill="#C6A962" opacity="0.8"/>
-        <path d="M24 8l-2 6 2-2 2 2-2-6z" fill="#C6A962"/>
-        <circle cx="10" cy="17" r="2.5" fill="#C6A962"/>
-        <circle cx="24" cy="8" r="2.5" fill="#C6A962"/>
-        <circle cx="38" cy="17" r="2.5" fill="#C6A962"/>
-      </svg>
+<!-- ==================== HERO ==================== -->
+<section class="hero" id="home">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <h1>Unlock The Door To Your Dream Property In Albania.</h1>
+      <p class="hero-sub">We help discerning investors discover exclusive properties along the Albanian Riviera and beyond. Privacy, precision, privilege.</p>
+      <div class="hero-buttons">
+        <a href="#contact" class="btn-pill">GET STARTED</a>
+        <a href="#process" class="btn-text-link">
+          <span class="play-circle">
+            <svg width="12" height="14" viewBox="0 0 12 14" fill="none"><path d="M1 1L11 7L1 13V1Z" fill="#1A1A1A"/></svg>
+          </span>
+          How It Works
+        </a>
+      </div>
     </div>
-    <div class="hero-eyebrow">Estates Albania</div>
-    <h1>Access the <em>Inaccessible</em></h1>
-    <p class="hero-sub">Exclusive off-market properties along the Albanian Riviera and beyond. Curated for discerning investors who value privilege, privacy, and precision.</p>
-    <div class="hero-buttons">
-      <a href="#contact" class="btn-primary">Private Consultation</a>
-      <a href="#portfolio" class="btn-secondary">View Portfolio</a>
+    <div class="hero-visual">
+      <div class="hero-blob">
+        <img class="hero-photo" src="https://images.unsplash.com/photo-1486718448742-163732cd1544?w=800&q=80" alt="Modern curved building with dramatic angles in black and white" loading="eager">
+        <video autoplay muted loop playsinline webkit-playsinline preload="auto" style="display:none;">
+          <source src="bg-video.mp4" type="video/mp4">
+        </video>
+      </div>
     </div>
   </div>
-  <div class="hero-scroll"><span></span></div>
 </section>
 
-<!-- WHY ALBANIA — DARK SECTION -->
-<div class="section-dark" id="why">
+<!-- ==================== STATS BAR ==================== -->
+<div class="stats-bar reveal">
+  <div class="stats-who">
+    <h3>Who We Are?</h3>
+    <a href="#about">Read more →</a>
+  </div>
+  <div class="stats-numbers">
+    <div class="stat-item">
+      <div class="stat-number">50+</div>
+      <div class="stat-label">Premium Properties</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">200+</div>
+      <div class="stat-label">Satisfied Clients</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">15+</div>
+      <div class="stat-label">Years Experience</div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== WHY US ==================== -->
+<div class="section bg-cream" id="about">
   <div class="section-inner">
     <div class="reveal">
-      <div class="section-label">The Opportunity</div>
-      <div class="section-title">Europe's Last<br>Hidden Gem</div>
-      <div class="section-desc">While the world discovers Albania, those with the right connections secure the best positions first. Property values along the coastline have risen 15-30% annually — and the trajectory is just beginning.</div>
+      <div class="section-label">Why Choose Us</div>
     </div>
-    <div class="stats-grid reveal-stagger" id="stats-grid">
-      <div class="stat-card" data-target="310" data-suffix="+">
-        <div class="stat-inner">
-          <div class="stat-number">310<span class="stat-unit">+</span></div>
-          <div class="stat-label">Days of sunshine per year</div>
-        </div>
+    <div class="why-tabs reveal">
+      <button class="why-tab active">Experience</button>
+      <button class="why-tab">Reputation</button>
+      <button class="why-tab">Communication</button>
+      <button class="why-tab">Network</button>
+    </div>
+    <div class="why-content reveal">
+      <div class="why-image">
+        <img src="https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=600&q=80" alt="Modern white building with geometric patterns" loading="lazy">
       </div>
-      <div class="stat-card" data-target="476">
-        <div class="stat-inner">
-          <div class="stat-number">476</div>
-          <div class="stat-unit">km</div>
-          <div class="stat-label">Of pristine coastline</div>
-        </div>
-      </div>
-      <div class="stat-card" data-target="1/5">
-        <div class="stat-inner">
-          <div class="stat-number">1/5</div>
-          <div class="stat-unit">th</div>
-          <div class="stat-label">The cost of comparable EU properties</div>
-        </div>
-      </div>
-      <div class="stat-card" data-target="30" data-suffix="%">
-        <div class="stat-inner">
-          <div class="stat-number">30<span class="stat-unit">%</span></div>
-          <div class="stat-label">Average annual appreciation in key zones</div>
-        </div>
+      <div class="why-text">
+        <h3>Building Your Future, One Property At A Time.</h3>
+        <p>With over 15 years navigating the Albanian real estate landscape, we bring unmatched local expertise and international standards to every transaction. Our deep network of legal, governmental, and industry contacts ensures that your investment is handled with the utmost care, confidentiality, and precision from initial inquiry to final handover.</p>
+        <a href="#contact" class="btn-outline">CONTACT US</a>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ADVANTAGES — WHITE SECTION -->
-<div class="section-white" id="advantage">
+<!-- ==================== SERVICES ==================== -->
+<div class="section bg-white" id="services">
   <div class="section-inner">
-    <div class="reveal">
-      <div class="section-label">Why Capital Prime</div>
-      <div class="section-title">Advantages Others<br>Can't Offer</div>
-      <div class="section-desc">Our institutional network and deep market intelligence give you access to opportunities that never reach public listings.</div>
+    <div class="services-header reveal">
+      <div>
+        <div class="section-label">Our Services</div>
+        <div class="section-title">Where Your Investment Journey Begins</div>
+      </div>
     </div>
-    <div class="advantage-list reveal-stagger">
-      <div class="advantage-item">
-        <span class="advantage-icon">🔑</span>
+    <div class="services-grid reveal">
+      <div class="service-card">
+        <div class="service-icon">🔑</div>
         <h3>Off-Market Access</h3>
-        <p>Properties sourced through our proprietary network — prime coastal land, historic estates, and development zones before they enter the public market.</p>
+        <p>Properties sourced through our proprietary network — prime coastal land, historic estates, and development zones before they reach public listings.</p>
+        <a href="#contact" class="service-link">READ MORE →</a>
       </div>
-      <div class="advantage-item">
-        <span class="advantage-icon">🏛️</span>
-        <h3>Institutional Network</h3>
-        <p>Direct relationships with cadastral authorities, municipal planning offices, and legal institutions ensure a seamless, accelerated acquisition process.</p>
-      </div>
-      <div class="advantage-item">
-        <span class="advantage-icon">🛡️</span>
-        <h3>Sovereign Due Diligence</h3>
+      <div class="service-card">
+        <div class="service-icon">🏛️</div>
+        <h3>Legal & Due Diligence</h3>
         <p>Complete title verification, legal clearance, and regulatory compliance. We resolve complexities that stop other buyers in their tracks.</p>
+        <a href="#contact" class="service-link">READ MORE →</a>
       </div>
-      <div class="advantage-item">
-        <span class="advantage-icon">🤝</span>
-        <h3>End-to-End Concierge</h3>
-        <p>From property identification to key handover — legal, notarial, residency permits, renovation management. You focus on the vision; we handle everything else.</p>
+      <div class="service-card">
+        <div class="service-icon">⏱️</div>
+        <h3>Streamlined Process</h3>
+        <p>From property identification to key handover, handled entirely by our team. Legal, notarial, and registration — all managed for you.</p>
+        <a href="#contact" class="service-link">READ MORE →</a>
       </div>
-    </div>
-  </div>
-</div>
-
-<!-- PORTFOLIO — DARK SECTION -->
-<div class="section-dark" id="portfolio">
-  <div class="section-inner">
-    <div class="reveal">
-      <div class="section-label">Exclusive Portfolio</div>
-      <div class="section-title">Selected Properties</div>
-      <div class="section-desc">A curated selection from our portfolio. Many of our finest opportunities are shared only in private consultation.</div>
-    </div>
-    <div class="portfolio-grid reveal-stagger" id="portfolio-grid">
-      <div class="property-card" data-tilt>
-        <div class="property-card-inner">
-          <div class="property-img">
-            🏖️
-            <span class="property-badge">Exclusive</span>
-          </div>
-          <div class="property-info">
-            <div class="property-location">Sarandë · Ionian Coast</div>
-            <div class="property-name">Seaside Villa Estate</div>
-            <div class="property-details">4 bed · 280m² · Private beach access · Panoramic sea view</div>
-            <div class="property-price">€420,000</div>
-          </div>
-        </div>
-      </div>
-      <div class="property-card" data-tilt>
-        <div class="property-card-inner">
-          <div class="property-img">
-            🏗️
-            <span class="property-badge">Pre-Market</span>
-          </div>
-          <div class="property-info">
-            <div class="property-location">Lalzit Bay · Adriatic</div>
-            <div class="property-name">Beachfront Development Land</div>
-            <div class="property-details">5,200m² · Zoned for tourism · Full permits secured</div>
-            <div class="property-price">€890,000</div>
-          </div>
-        </div>
-      </div>
-      <div class="property-card" data-tilt>
-        <div class="property-card-inner">
-          <div class="property-img">
-            🏛️
-            <span class="property-badge">Off-Market</span>
-          </div>
-          <div class="property-info">
-            <div class="property-location">Gjirokastër · UNESCO Heritage</div>
-            <div class="property-name">Ottoman Heritage Mansion</div>
-            <div class="property-details">Historic restoration · 350m² · Boutique hotel potential</div>
-            <div class="property-price">€280,000</div>
-          </div>
-        </div>
+      <div class="service-card">
+        <div class="service-icon">🛡️</div>
+        <h3>Lifetime Support</h3>
+        <p>Ongoing property management, investment advisory, renovation oversight, and concierge services long after acquisition.</p>
+        <a href="#contact" class="service-link">READ MORE →</a>
       </div>
     </div>
   </div>
 </div>
 
-<!-- PROCESS — WHITE SECTION -->
-<div class="section-white" id="process">
+<!-- ==================== PORTFOLIO ==================== -->
+<div class="section bg-cream" id="portfolio">
+  <div class="section-inner">
+    <div class="portfolio-header reveal">
+      <div class="section-title" style="margin-bottom:0;">Our Selected Properties</div>
+      <a href="#portfolio" class="explore-link">EXPLORE ALL →</a>
+    </div>
+    <div class="portfolio-grid reveal">
+      <div class="property-card">
+        <div class="property-img">
+          <img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=600&q=80" alt="Luxury Mediterranean villa with pool" loading="lazy">
+          <span class="property-badge">Exclusive</span>
+        </div>
+        <div class="property-info">
+          <div class="property-location">Sarandë · Ionian Coast</div>
+          <div class="property-name">Seaside Villa Estate</div>
+          <div class="property-details">4 bed · 280m² · Private beach access</div>
+          <div class="property-price">€420,000</div>
+        </div>
+      </div>
+      <div class="property-card">
+        <div class="property-img">
+          <img src="https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=600&q=80" alt="Beautiful beach coastline with blue water" loading="lazy">
+          <span class="property-badge">Pre-Market</span>
+        </div>
+        <div class="property-info">
+          <div class="property-location">Lalzit Bay · Adriatic Coast</div>
+          <div class="property-name">Beachfront Development Land</div>
+          <div class="property-details">5,200m² · Zoned for tourism · Full permits</div>
+          <div class="property-price">€890,000</div>
+        </div>
+      </div>
+      <div class="property-card">
+        <div class="property-img">
+          <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=80" alt="Classic heritage style house" loading="lazy">
+          <span class="property-badge">Off-Market</span>
+        </div>
+        <div class="property-info">
+          <div class="property-location">Gjirokastër · UNESCO Heritage</div>
+          <div class="property-name">Ottoman Heritage Mansion</div>
+          <div class="property-details">Historic · 350m² · Boutique hotel potential</div>
+          <div class="property-price">€280,000</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== PROCESS ==================== -->
+<div class="section bg-white process-section" id="process">
   <div class="section-inner">
     <div class="reveal">
-      <div class="section-label">How It Works</div>
-      <div class="section-title">From Vision to Keys</div>
-      <div class="section-desc">A private, white-glove process designed for international buyers who expect efficiency and discretion.</div>
+      <div class="section-label" style="text-align:center;">The Process</div>
+      <div class="section-title" style="text-align:center;">How It Works</div>
     </div>
-    <div class="services-flow reveal-stagger">
-      <div class="service-step">
-        <span class="step-num">01</span>
+    <div class="process-flow reveal">
+      <div class="process-step">
+        <div class="step-num">01</div>
         <div>
           <h3>Private Brief</h3>
           <p>Share your vision, budget, and timeline in a confidential consultation</p>
         </div>
       </div>
-      <div class="service-step">
-        <span class="step-num">02</span>
+      <div class="process-step">
+        <div class="step-num">02</div>
         <div>
           <h3>Curated Selection</h3>
-          <p>We match you with properties from our network — including off-market opportunities</p>
+          <p>We match you with properties from our network, including off-market gems</p>
         </div>
       </div>
-      <div class="service-step">
-        <span class="step-num">03</span>
+      <div class="process-step">
+        <div class="step-num">03</div>
         <div>
           <h3>Due Diligence</h3>
           <p>Full legal, cadastral, and regulatory verification before you commit</p>
         </div>
       </div>
-      <div class="service-step">
-        <span class="step-num">04</span>
+      <div class="process-step">
+        <div class="step-num">04</div>
         <div>
           <h3>Acquisition</h3>
           <p>Contract, notarization, registration — handled entirely by our team</p>
@@ -1107,18 +1327,22 @@ nav, .hero, .section-dark, .section-white, .contact-section, footer, .section-di
   </div>
 </div>
 
-<!-- CONTACT — DARK SECTION -->
-<div class="contact-section" id="contact">
-  <div class="contact-inner">
+<!-- ==================== CONTACT ==================== -->
+<div class="section bg-cream contact-section" id="contact">
+  <div class="section-inner">
     <div class="reveal">
-      <div class="section-label">Begin</div>
-      <div class="section-title" style="color: var(--white);">Private Consultation</div>
-      <div class="section-desc" style="color: var(--gray-light); margin: 0 auto 48px; max-width: 500px;">Share your investment goals and we'll prepare a personalized portfolio within 48 hours. All inquiries are treated with absolute discretion.</div>
-      <form class="contact-form" onsubmit="event.preventDefault(); this.querySelector('button').textContent='SENT ✓'; this.querySelector('button').style.background='#2d5a27';">
+      <div class="section-label" style="text-align:center;">Get In Touch</div>
+      <div class="section-title" style="text-align:center;">Begin Your Journey</div>
+      <div class="section-desc" style="text-align:center;margin:0 auto 16px;">Share your investment goals and we'll prepare a personalized portfolio within 48 hours. All inquiries are treated with absolute discretion.</div>
+    </div>
+    <form class="contact-form reveal" onsubmit="event.preventDefault(); this.querySelector('button').textContent='Sent ✓'; this.querySelector('button').style.background='#2d5a27';">
+      <div class="form-row">
         <input type="text" placeholder="Full Name" required>
         <input type="email" placeholder="Email Address" required>
+      </div>
+      <div class="form-row">
         <input type="tel" placeholder="Phone (with country code)">
-        <select>
+        <select required>
           <option value="" disabled selected>Investment Interest</option>
           <option>Residential — Villa / Apartment</option>
           <option>Coastal Land — Development</option>
@@ -1126,296 +1350,243 @@ nav, .hero, .section-dark, .section-white, .contact-section, footer, .section-di
           <option>Heritage — Restoration Project</option>
           <option>Portfolio — Multiple Properties</option>
         </select>
-        <select>
-          <option value="" disabled selected>Budget Range</option>
-          <option>€50,000 – €150,000</option>
-          <option>€150,000 – €500,000</option>
-          <option>€500,000 – €1,000,000</option>
-          <option>€1,000,000+</option>
-        </select>
-        <textarea placeholder="Tell us about your vision..."></textarea>
-        <button type="submit" class="btn-primary" style="width:100%; margin-top: 2px;">Request Consultation</button>
-      </form>
-      <div class="contact-channels">
-        <a href="https://wa.me/355000000000" class="contact-channel">📱 WhatsApp</a>
-        <a href="mailto:info@capitalprime.al" class="contact-channel">✉️ info@capitalprime.al</a>
-        <a href="tel:+355000000000" class="contact-channel">📞 +355 (0) 00 000 000</a>
       </div>
+      <select>
+        <option value="" disabled selected>Budget Range</option>
+        <option>€50,000 – €150,000</option>
+        <option>€150,000 – €500,000</option>
+        <option>€500,000 – €1,000,000</option>
+        <option>€1,000,000+</option>
+      </select>
+      <textarea placeholder="Tell us about your investment vision..."></textarea>
+      <button type="submit" class="btn-pill">Request Consultation</button>
+    </form>
+    <div class="contact-channels reveal">
+      <a href="https://wa.me/355000000000" class="contact-channel">📱 WhatsApp</a>
+      <a href="mailto:info@capitalprime.al" class="contact-channel">✉️ info@capitalprime.al</a>
+      <a href="tel:+355000000000" class="contact-channel">📞 +355 (0) 00 000 000</a>
     </div>
   </div>
 </div>
 
-<!-- SECRET SOCIETY ELEMENTS — ultra subtle -->
+<!-- ==================== SECRET SOCIETY ELEMENTS (kept from original) ==================== -->
 <!-- Eye of Providence -->
-<div class="conspiracy-element" style="left: 5%; top: 15%; width: 100px; height: 100px; opacity: 0.02;">
+<div class="conspiracy-element eye-providence" style="left: 8%; top: 15%; width: 120px; height: 120px; opacity: 0.03;">
   <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <polygon points="60,10 110,100 10,100" stroke="#C6A962" stroke-width="1" fill="none"/>
-    <circle cx="60" cy="65" r="18" stroke="#C6A962" stroke-width="0.8" fill="none"/>
-    <circle cx="60" cy="65" r="8" fill="#C6A962" opacity="0.3"/>
-    <line x1="60" y1="47" x2="60" y2="35" stroke="#C6A962" stroke-width="0.4"/>
-    <line x1="45" y1="55" x2="38" y2="48" stroke="#C6A962" stroke-width="0.4"/>
-    <line x1="75" y1="55" x2="82" y2="48" stroke="#C6A962" stroke-width="0.4"/>
+    <polygon points="60,10 110,100 10,100" stroke="#C6A962" stroke-width="1.5" fill="none"/>
+    <circle cx="60" cy="65" r="18" stroke="#C6A962" stroke-width="1" fill="none"/>
+    <circle cx="60" cy="65" r="8" fill="#C6A962" opacity="0.4"/>
+    <line x1="60" y1="47" x2="60" y2="35" stroke="#C6A962" stroke-width="0.5"/>
+    <line x1="45" y1="55" x2="38" y2="48" stroke="#C6A962" stroke-width="0.5"/>
+    <line x1="75" y1="55" x2="82" y2="48" stroke="#C6A962" stroke-width="0.5"/>
+    <line x1="48" y1="75" x2="40" y2="82" stroke="#C6A962" stroke-width="0.5"/>
+    <line x1="72" y1="75" x2="80" y2="82" stroke="#C6A962" stroke-width="0.5"/>
   </svg>
 </div>
 
-<!-- Pyramid -->
-<div class="conspiracy-element" style="right: 4%; top: 38%; width: 80px; height: 80px; opacity: 0.015;">
+<!-- Pyramid with rays -->
+<div class="conspiracy-element" style="right: 5%; top: 40%; width: 100px; height: 100px; opacity: 0.025;">
   <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <polygon points="50,5 95,90 5,90" stroke="#C6A962" stroke-width="0.8" fill="none"/>
-    <polygon points="50,25 75,75 25,75" stroke="#C6A962" stroke-width="0.4" fill="none"/>
+    <polygon points="50,5 95,90 5,90" stroke="#C6A962" stroke-width="1" fill="none"/>
+    <polygon points="50,25 75,75 25,75" stroke="#C6A962" stroke-width="0.5" fill="none"/>
+    <line x1="50" y1="0" x2="50" y2="5" stroke="#C6A962" stroke-width="0.5"/>
+    <line x1="30" y1="5" x2="50" y2="15" stroke="#C6A962" stroke-width="0.3"/>
+    <line x1="70" y1="5" x2="50" y2="15" stroke="#C6A962" stroke-width="0.3"/>
   </svg>
 </div>
 
 <!-- Compass & Square -->
-<div class="conspiracy-element" style="left: 3%; top: 58%; width: 70px; height: 70px; opacity: 0.018;">
+<div class="conspiracy-element" style="left: 3%; top: 60%; width: 90px; height: 90px; opacity: 0.03;">
   <svg viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M45 10 L75 75 L15 75 Z" stroke="#C6A962" stroke-width="0.6" fill="none"/>
-    <path d="M45 80 L75 15 L15 15 Z" stroke="#C6A962" stroke-width="0.6" fill="none"/>
-    <circle cx="45" cy="45" r="5" stroke="#C6A962" stroke-width="0.4" fill="none"/>
-    <text x="43" y="48" fill="#C6A962" font-size="6" font-family="sans-serif">G</text>
+    <path d="M45 10 L75 75 L15 75 Z" stroke="#C6A962" stroke-width="0.8" fill="none"/>
+    <path d="M45 80 L75 15 L15 15 Z" stroke="#C6A962" stroke-width="0.8" fill="none"/>
+    <circle cx="45" cy="45" r="5" stroke="#C6A962" stroke-width="0.5" fill="none"/>
+    <text x="43" y="48" fill="#C6A962" font-size="6" font-family="serif">G</text>
   </svg>
 </div>
 
 <!-- Sacred Geometry -->
-<div class="conspiracy-element" style="right: 6%; top: 72%; width: 120px; height: 120px; opacity: 0.012;">
+<div class="conspiracy-element" style="right: 8%; top: 75%; width: 140px; height: 140px; opacity: 0.02;">
   <svg viewBox="0 0 140 140" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="70" cy="70" r="30" stroke="#C6A962" stroke-width="0.4" fill="none"/>
-    <circle cx="70" cy="40" r="30" stroke="#C6A962" stroke-width="0.4" fill="none"/>
-    <circle cx="70" cy="100" r="30" stroke="#C6A962" stroke-width="0.4" fill="none"/>
-    <circle cx="44" cy="55" r="30" stroke="#C6A962" stroke-width="0.4" fill="none"/>
-    <circle cx="96" cy="55" r="30" stroke="#C6A962" stroke-width="0.4" fill="none"/>
-    <circle cx="44" cy="85" r="30" stroke="#C6A962" stroke-width="0.4" fill="none"/>
-    <circle cx="96" cy="85" r="30" stroke="#C6A962" stroke-width="0.4" fill="none"/>
+    <circle cx="70" cy="70" r="30" stroke="#C6A962" stroke-width="0.5" fill="none"/>
+    <circle cx="70" cy="40" r="30" stroke="#C6A962" stroke-width="0.5" fill="none"/>
+    <circle cx="70" cy="100" r="30" stroke="#C6A962" stroke-width="0.5" fill="none"/>
+    <circle cx="44" cy="55" r="30" stroke="#C6A962" stroke-width="0.5" fill="none"/>
+    <circle cx="96" cy="55" r="30" stroke="#C6A962" stroke-width="0.5" fill="none"/>
+    <circle cx="44" cy="85" r="30" stroke="#C6A962" stroke-width="0.5" fill="none"/>
+    <circle cx="96" cy="85" r="30" stroke="#C6A962" stroke-width="0.5" fill="none"/>
   </svg>
 </div>
 
 <!-- Ouroboros -->
-<div class="conspiracy-element" style="left: 5%; bottom: 18%; width: 80px; height: 80px; opacity: 0.015;">
+<div class="conspiracy-element" style="left: 6%; bottom: 15%; width: 100px; height: 100px; opacity: 0.025;">
   <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="50" cy="50" r="35" stroke="#C6A962" stroke-width="1" fill="none" stroke-dasharray="3,2"/>
-    <path d="M85,50 L80,45 L80,55 Z" fill="#C6A962" opacity="0.4"/>
-    <text x="38" y="54" fill="#C6A962" font-size="8" font-family="sans-serif" opacity="0.4">∞</text>
+    <circle cx="50" cy="50" r="35" stroke="#C6A962" stroke-width="1.5" fill="none" stroke-dasharray="3,2"/>
+    <path d="M85,50 L80,45 L80,55 Z" fill="#C6A962" opacity="0.5"/>
+    <circle cx="50" cy="50" r="20" stroke="#C6A962" stroke-width="0.3" fill="none"/>
+    <text x="38" y="54" fill="#C6A962" font-size="8" font-family="serif" opacity="0.5">∞</text>
   </svg>
 </div>
 
-<!-- Key -->
-<div class="conspiracy-element" style="right: 3%; top: 18%; width: 40px; height: 70px; opacity: 0.018;">
+<!-- Key symbol -->
+<div class="conspiracy-element" style="right: 4%; top: 20%; width: 50px; height: 80px; opacity: 0.03;">
   <svg viewBox="0 0 50 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="25" cy="18" r="14" stroke="#C6A962" stroke-width="0.8" fill="none"/>
-    <circle cx="25" cy="18" r="6" stroke="#C6A962" stroke-width="0.4" fill="none"/>
-    <line x1="25" y1="32" x2="25" y2="72" stroke="#C6A962" stroke-width="0.8"/>
-    <line x1="25" y1="55" x2="35" y2="55" stroke="#C6A962" stroke-width="0.8"/>
-    <line x1="25" y1="63" x2="33" y2="63" stroke="#C6A962" stroke-width="0.8"/>
+    <circle cx="25" cy="18" r="14" stroke="#C6A962" stroke-width="1" fill="none"/>
+    <circle cx="25" cy="18" r="6" stroke="#C6A962" stroke-width="0.5" fill="none"/>
+    <line x1="25" y1="32" x2="25" y2="72" stroke="#C6A962" stroke-width="1.2"/>
+    <line x1="25" y1="55" x2="35" y2="55" stroke="#C6A962" stroke-width="1"/>
+    <line x1="25" y1="63" x2="33" y2="63" stroke="#C6A962" stroke-width="1"/>
   </svg>
 </div>
 
 <!-- Globe -->
-<div class="conspiracy-element" style="left: 8%; top: 33%; width: 60px; height: 60px; opacity: 0.012;">
+<div class="conspiracy-element" style="left: 10%; top: 35%; width: 80px; height: 80px; opacity: 0.02;">
   <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="40" cy="40" r="35" stroke="#C6A962" stroke-width="0.6" fill="none"/>
-    <ellipse cx="40" cy="40" rx="20" ry="35" stroke="#C6A962" stroke-width="0.3" fill="none"/>
+    <circle cx="40" cy="40" r="35" stroke="#C6A962" stroke-width="0.8" fill="none"/>
+    <ellipse cx="40" cy="40" rx="20" ry="35" stroke="#C6A962" stroke-width="0.4" fill="none"/>
+    <ellipse cx="40" cy="40" rx="8" ry="35" stroke="#C6A962" stroke-width="0.3" fill="none"/>
     <line x1="5" y1="25" x2="75" y2="25" stroke="#C6A962" stroke-width="0.3"/>
-    <line x1="5" y1="40" x2="75" y2="40" stroke="#C6A962" stroke-width="0.3"/>
+    <line x1="5" y1="40" x2="75" y2="40" stroke="#C6A962" stroke-width="0.4"/>
     <line x1="5" y1="55" x2="75" y2="55" stroke="#C6A962" stroke-width="0.3"/>
   </svg>
 </div>
 
 <!-- Pentagram -->
-<div class="conspiracy-element" style="right: 10%; bottom: 28%; width: 50px; height: 50px; opacity: 0.015;">
+<div class="conspiracy-element" style="right: 12%; bottom: 30%; width: 60px; height: 60px; opacity: 0.025;">
   <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <polygon points="30,2 37,22 58,22 41,35 48,55 30,43 12,55 19,35 2,22 23,22" stroke="#C6A962" stroke-width="0.4" fill="none"/>
-    <circle cx="30" cy="30" r="25" stroke="#C6A962" stroke-width="0.3" fill="none"/>
+    <polygon points="30,2 37,22 58,22 41,35 48,55 30,43 12,55 19,35 2,22 23,22" stroke="#C6A962" stroke-width="0.6" fill="none"/>
+    <circle cx="30" cy="30" r="25" stroke="#C6A962" stroke-width="0.4" fill="none"/>
   </svg>
 </div>
 
 <!-- Latin Phrases -->
-<div class="conspiracy-element latin-phrase" style="top: 26%; left: 50%; transform: translateX(-50%) rotate(-1deg); font-size: 10px;">NOVUS ORDO SECLORUM</div>
-<div class="conspiracy-element latin-phrase" style="top: 50%; right: 12%; transform: rotate(0.5deg); font-size: 9px;">ANNUIT COEPTIS</div>
-<div class="conspiracy-element latin-phrase" style="bottom: 38%; left: 12%; transform: rotate(-1deg); font-size: 9px;">SCIENTIA POTENTIA EST</div>
-<div class="conspiracy-element latin-phrase" style="top: 68%; left: 50%; transform: translateX(-50%); font-size: 8px;">E PLURIBUS UNUM</div>
+<div class="conspiracy-element latin-phrase" style="top: 28%; left: 50%; transform: translateX(-50%) rotate(-2deg); font-size: 11px; opacity: 0.025;">
+  NOVUS ORDO SECLORUM
+</div>
+<div class="conspiracy-element latin-phrase" style="top: 52%; right: 15%; transform: rotate(1deg); font-size: 10px; opacity: 0.02;">
+  ANNUIT COEPTIS
+</div>
+<div class="conspiracy-element latin-phrase" style="bottom: 40%; left: 15%; transform: rotate(-1.5deg); font-size: 10px; opacity: 0.02;">
+  SCIENTIA POTENTIA EST
+</div>
+<div class="conspiracy-element latin-phrase" style="top: 70%; left: 50%; transform: translateX(-50%) rotate(0.5deg); font-size: 9px; opacity: 0.018;">
+  E PLURIBUS UNUM
+</div>
 
 <!-- Roman Numerals -->
-<div class="conspiracy-element roman-numeral" style="top: 16%; right: 18%; font-size: 12px;">MMXXVI</div>
-<div class="conspiracy-element roman-numeral" style="bottom: 20%; left: 18%; font-size: 11px;">MDXXVI</div>
+<div class="conspiracy-element roman-numeral" style="top: 18%; right: 20%; font-size: 14px; opacity: 0.02;">
+  MMXXVI
+</div>
+<div class="conspiracy-element roman-numeral" style="bottom: 22%; left: 20%; font-size: 12px; opacity: 0.018;">
+  MDXXVI
+</div>
 
-<!-- FOOTER -->
+<!-- ROTATING COMPASS ROSE -->
+<div class="compass-rose">
+  <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="100" cy="100" r="90" stroke="#C6A962" stroke-width="1" />
+    <circle cx="100" cy="100" r="70" stroke="#C6A962" stroke-width="0.5" />
+    <polygon points="100,10 105,45 100,35 95,45" fill="#C6A962" />
+    <polygon points="100,190 105,155 100,165 95,155" fill="#C6A962" opacity="0.6" />
+    <polygon points="10,100 45,95 35,100 45,105" fill="#C6A962" opacity="0.6" />
+    <polygon points="190,100 155,95 165,100 155,105" fill="#C6A962" opacity="0.6" />
+    <polygon points="36,36 58,55 50,52 55,60" fill="#C6A962" opacity="0.4" />
+    <polygon points="164,36 142,55 150,52 145,60" fill="#C6A962" opacity="0.4" />
+    <polygon points="36,164 58,145 50,148 55,140" fill="#C6A962" opacity="0.4" />
+    <polygon points="164,164 142,145 150,148 145,140" fill="#C6A962" opacity="0.4" />
+    <circle cx="100" cy="100" r="8" stroke="#C6A962" stroke-width="1" fill="none" />
+    <circle cx="100" cy="100" r="2" fill="#C6A962" />
+    <text x="96" y="28" fill="#C6A962" font-family="serif" font-size="12" font-weight="600">N</text>
+    <text x="97" y="185" fill="#C6A962" font-family="serif" font-size="10">S</text>
+    <text x="17" y="104" fill="#C6A962" font-family="serif" font-size="10">W</text>
+    <text x="175" y="104" fill="#C6A962" font-family="serif" font-size="10">E</text>
+  </svg>
+</div>
+
+<!-- Sound toggle button (restyled minimal) -->
+<button id="soundToggle" aria-label="Toggle sound">🔇</button>
+
+<!-- ==================== FOOTER ==================== -->
 <footer>
-  <div class="footer-logo">Capital Prime · Estates Albania</div>
-  <p>© 2026 Capital Prime Estates Albania. All rights reserved.</p>
-  <p style="margin-top:8px; font-size:11px; letter-spacing: 2px; text-transform: uppercase;">Tirana · Sarandë · Vlorë · Durrës</p>
+  <div class="footer-gold-line"></div>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo">Capital Prime</div>
+      <p>Exclusive off-market properties along the Albanian Riviera and beyond. Curated for discerning investors who value privilege, privacy, and precision.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <a href="#home">Home</a>
+      <a href="#about">About Us</a>
+      <a href="#portfolio">Properties</a>
+      <a href="#process">How It Works</a>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <a href="#services">Off-Market Access</a>
+      <a href="#services">Legal & Due Diligence</a>
+      <a href="#services">Concierge</a>
+      <a href="#contact">Consultation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <a href="mailto:info@capitalprime.al">info@capitalprime.al</a>
+      <a href="tel:+355000000000">+355 (0) 00 000 000</a>
+      <a href="https://wa.me/355000000000">WhatsApp</a>
+      <p style="margin-top:12px;font-size:12px;color:rgba(255,255,255,0.3);">Tirana · Sarandë · Vlorë · Durrës</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Capital Prime Estates Albania. All rights reserved.</p>
+  </div>
 </footer>
 
+<!-- ==================== SCRIPTS ==================== -->
 <script>
 (function() {
   'use strict';
 
-  // ===== THREE.JS — WIREFRAME BUILDING IN HERO =====
-  var heroCanvas = document.getElementById('hero-three-canvas');
-  var isMobile = window.innerWidth < 768;
+  // ===== NAV SCROLL SHADOW =====
+  var nav = document.querySelector('nav');
+  window.addEventListener('scroll', function() {
+    nav.classList.toggle('scrolled', window.scrollY > 10);
+  }, { passive: true });
 
-  if (typeof THREE !== 'undefined' && heroCanvas) {
-    var scene = new THREE.Scene();
-    var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-    var renderer = new THREE.WebGLRenderer({ canvas: heroCanvas, alpha: true, antialias: !isMobile });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-    var goldColor = 0xC6A962;
-    var wireframeMat = new THREE.LineBasicMaterial({ color: goldColor, transparent: true, opacity: 0.12 });
-    var wireframeMatBright = new THREE.LineBasicMaterial({ color: goldColor, transparent: true, opacity: 0.25 });
-
-    var buildingGroup = new THREE.Group();
-
-    // Main tower
-    function createWireframeBox(w, h, d, x, y, z, mat) {
-      var geo = new THREE.BoxGeometry(w, h, d);
-      var edges = new THREE.EdgesGeometry(geo);
-      var line = new THREE.LineSegments(edges, mat || wireframeMat);
-      line.position.set(x, y, z);
-      return line;
-    }
-
-    // Central tower
-    buildingGroup.add(createWireframeBox(2.5, 8, 2.5, 0, 0, 0, wireframeMatBright));
-    // Floors
-    for (var f = -3; f <= 3; f++) {
-      var floorGeo = new THREE.PlaneGeometry(2.5, 2.5);
-      var floorEdges = new THREE.EdgesGeometry(floorGeo);
-      var floorLine = new THREE.LineSegments(floorEdges, wireframeMat);
-      floorLine.rotation.x = -Math.PI / 2;
-      floorLine.position.set(0, f * 1.15, 0);
-      buildingGroup.add(floorLine);
-    }
-
-    // Left building
-    buildingGroup.add(createWireframeBox(2, 5.5, 2, -3.5, -1.25, 0.5));
-    // Right building
-    buildingGroup.add(createWireframeBox(1.8, 6.5, 1.8, 3.2, -0.75, -0.3));
-    // Far back building
-    buildingGroup.add(createWireframeBox(3, 4, 1.5, 1, -2, -3));
-    // Small structure
-    buildingGroup.add(createWireframeBox(1.2, 3, 1.2, -2, -2.5, 2));
-
-    // Antenna/spire on main tower
-    var spireGeo = new THREE.BufferGeometry().setFromPoints([
-      new THREE.Vector3(0, 4, 0),
-      new THREE.Vector3(0, 6.5, 0)
-    ]);
-    buildingGroup.add(new THREE.LineSegments(spireGeo, wireframeMatBright));
-
-    // Cross-braces on main tower
-    var bracePoints = [
-      new THREE.Vector3(-1.25, -2, 1.25), new THREE.Vector3(1.25, 2, -1.25),
-      new THREE.Vector3(1.25, -2, 1.25), new THREE.Vector3(-1.25, 2, -1.25),
-    ];
-    var braceGeo = new THREE.BufferGeometry().setFromPoints(bracePoints);
-    buildingGroup.add(new THREE.LineSegments(braceGeo, new THREE.LineBasicMaterial({ color: goldColor, transparent: true, opacity: 0.06 })));
-
-    // Ground grid
-    var gridSize = 16;
-    var gridDiv = 16;
-    var gridPoints = [];
-    for (var i = -gridSize/2; i <= gridSize/2; i += gridSize/gridDiv) {
-      gridPoints.push(new THREE.Vector3(i, -4, -gridSize/2));
-      gridPoints.push(new THREE.Vector3(i, -4, gridSize/2));
-      gridPoints.push(new THREE.Vector3(-gridSize/2, -4, i));
-      gridPoints.push(new THREE.Vector3(gridSize/2, -4, i));
-    }
-    var gridGeo = new THREE.BufferGeometry().setFromPoints(gridPoints);
-    buildingGroup.add(new THREE.LineSegments(gridGeo, new THREE.LineBasicMaterial({ color: goldColor, transparent: true, opacity: 0.04 })));
-
-    scene.add(buildingGroup);
-    camera.position.set(8, 4, 12);
-    camera.lookAt(0, 0, 0);
-
-    var mouseX = 0, mouseY = 0;
-    document.addEventListener('mousemove', function(e) {
-      mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
-      mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+  // ===== SOUND TOGGLE =====
+  var v = document.querySelector('.hero-blob video');
+  var btn = document.getElementById('soundToggle');
+  if (v) {
+    v.volume = 0.6;
+    v.play().catch(function() {
+      document.addEventListener('touchstart', function() { v.play(); }, { once: true });
     });
-
-    function animateHero() {
-      requestAnimationFrame(animateHero);
-      var time = Date.now() * 0.0003;
-      buildingGroup.rotation.y = time + mouseX * 0.3;
-      buildingGroup.rotation.x = Math.sin(time * 0.5) * 0.05 + mouseY * 0.1;
-      renderer.render(scene, camera);
-    }
-
-    animateHero();
-
-    window.addEventListener('resize', function() {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
+  }
+  if (btn && v) {
+    btn.addEventListener('click', function() {
+      if (v.muted) {
+        v.muted = false;
+        v.volume = 0.6;
+        btn.textContent = '🔊';
+        v.play().catch(function(){});
+      } else {
+        v.muted = true;
+        btn.textContent = '🔇';
+      }
     });
   }
 
   // ===== SCROLL REVEAL =====
-  var reveals = document.querySelectorAll('.reveal, .reveal-stagger');
-  var revealObserver = new IntersectionObserver(function(entries) {
+  var reveals = document.querySelectorAll('.reveal');
+  var observer = new IntersectionObserver(function(entries) {
     entries.forEach(function(entry) {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-
-        // 3D flip for stat cards
-        if (entry.target.id === 'stats-grid' || entry.target.closest && entry.target.closest('#stats-grid')) {
-          var cards = entry.target.querySelectorAll ? entry.target.querySelectorAll('.stat-card') : [];
-          cards.forEach(function(card, i) {
-            setTimeout(function() {
-              card.classList.add('flipped');
-            }, i * 150);
-          });
-        }
-      }
+      if (entry.isIntersecting) entry.target.classList.add('visible');
     });
-  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
-  reveals.forEach(function(el) { revealObserver.observe(el); });
-
-  // ===== 3D TILT ON PROPERTY CARDS =====
-  if (!isMobile) {
-    var tiltCards = document.querySelectorAll('[data-tilt]');
-    tiltCards.forEach(function(card) {
-      var inner = card.querySelector('.property-card-inner');
-      card.addEventListener('mousemove', function(e) {
-        var rect = card.getBoundingClientRect();
-        var x = e.clientX - rect.left;
-        var y = e.clientY - rect.top;
-        var centerX = rect.width / 2;
-        var centerY = rect.height / 2;
-        var rotateX = (y - centerY) / centerY * -8;
-        var rotateY = (x - centerX) / centerX * 8;
-        inner.style.transform = 'perspective(800px) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg) scale(1.02)';
-      });
-      card.addEventListener('mouseleave', function() {
-        inner.style.transform = 'perspective(800px) rotateX(0) rotateY(0) scale(1)';
-      });
-    });
-  }
-
-  // ===== PARALLAX ON SCROLL =====
-  var parallaxSections = document.querySelectorAll('.section-dark, .section-white');
-  function handleParallax() {
-    var scrollY = window.pageYOffset;
-    parallaxSections.forEach(function(section) {
-      var rect = section.getBoundingClientRect();
-      var sectionTop = rect.top + scrollY;
-      var offset = (scrollY - sectionTop) * 0.05;
-      var label = section.querySelector('.section-label');
-      var title = section.querySelector('.section-title');
-      if (label && rect.top < window.innerHeight && rect.bottom > 0) {
-        label.style.transform = 'translateY(' + (offset * 0.3) + 'px)';
-        if (title) title.style.transform = 'translateY(' + (offset * 0.15) + 'px)';
-      }
-    });
-  }
-  if (!isMobile) {
-    window.addEventListener('scroll', handleParallax, { passive: true });
-  }
+  }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+  reveals.forEach(function(el) { observer.observe(el); });
 
   // ===== MOBILE HAMBURGER MENU =====
   var menuBtn = document.getElementById('menuBtn');
-  var navLinks = document.querySelector('.nav-links');
+  var navLinks = document.getElementById('navLinks');
   var menuOpen = false;
 
   menuBtn.addEventListener('click', function(e) {
@@ -1441,250 +1612,36 @@ nav, .hero, .section-dark, .section-white, .contact-section, footer, .section-di
     }
   });
 
-  // ===== NAV BORDER ON SCROLL =====
-  window.addEventListener('scroll', function() {
-    var nav = document.querySelector('nav');
-    nav.style.borderBottomColor = window.scrollY > 50
-      ? 'rgba(198,169,98,0.12)' : 'rgba(198,169,98,0.06)';
-  });
-
-  // ===== CONSPIRACY PARALLAX DRIFT =====
-  var conspElements = document.querySelectorAll('.conspiracy-element');
-  var lastScrollC = 0;
-  window.addEventListener('scroll', function() {
-    var scrollY = window.pageYOffset;
-    var delta = scrollY - lastScrollC;
-    conspElements.forEach(function(el, i) {
-      var speed = 0.015 + (i % 5) * 0.006;
-      var current = parseFloat(el.dataset.drift || 0);
-      current += delta * speed;
-      el.dataset.drift = current;
-      el.style.transform = (el.style.transform || '').replace(/translateY\([^)]*\)/, '') + ' translateY(' + current + 'px)';
+  // ===== WHY US TABS (visual only) =====
+  var tabs = document.querySelectorAll('.why-tab');
+  tabs.forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      tabs.forEach(function(t) { t.classList.remove('active'); });
+      tab.classList.add('active');
     });
-    lastScrollC = scrollY;
-  }, { passive: true });
-
-  // ===== GEOMETRIC ANGULAR PARTICLE BACKGROUND =====
-  var canvas = document.getElementById('bg-canvas');
-  var ctx = canvas.getContext('2d');
-  var W, H, particles, mouse, particleCount, animId;
-
-  mouse = { x: -9999, y: -9999 };
-  particleCount = isMobile ? 30 : 60;
-
-  function resize() {
-    W = canvas.width = window.innerWidth;
-    H = canvas.height = window.innerHeight;
-  }
-
-  function Particle() { this.reset(); }
-  Particle.prototype.reset = function() {
-    this.x = Math.random() * W;
-    this.y = Math.random() * H;
-    this.vx = (Math.random() - 0.5) * 0.25;
-    this.vy = (Math.random() - 0.5) * 0.25;
-    this.size = 1 + Math.random() * 1.5;
-    this.alpha = 0.02 + Math.random() * 0.04;
-    // Angular shapes: 0=square, 1=triangle, 2=diamond
-    this.shape = Math.floor(Math.random() * 3);
-  };
-
-  Particle.prototype.update = function() {
-    var dx = this.x - mouse.x;
-    var dy = this.y - mouse.y;
-    var dist = Math.sqrt(dx * dx + dy * dy);
-    var repel = isMobile ? 60 : 100;
-    if (dist < repel && dist > 0) {
-      var force = (repel - dist) / repel * 0.5;
-      this.vx += (dx / dist) * force;
-      this.vy += (dy / dist) * force;
-    }
-    this.vx *= 0.98;
-    this.vy *= 0.98;
-    var speed = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
-    if (speed > 1.2) { this.vx = (this.vx / speed) * 1.2; this.vy = (this.vy / speed) * 1.2; }
-    this.x += this.vx;
-    this.y += this.vy;
-    if (this.x < -10) this.x = W + 10;
-    if (this.x > W + 10) this.x = -10;
-    if (this.y < -10) this.y = H + 10;
-    if (this.y > H + 10) this.y = -10;
-  };
-
-  Particle.prototype.draw = function() {
-    ctx.fillStyle = 'rgba(198, 169, 98, ' + this.alpha + ')';
-    ctx.beginPath();
-    var s = this.size;
-    if (this.shape === 0) {
-      // Square — angular
-      ctx.rect(this.x - s, this.y - s, s * 2, s * 2);
-    } else if (this.shape === 1) {
-      // Triangle
-      ctx.moveTo(this.x, this.y - s * 1.2);
-      ctx.lineTo(this.x - s, this.y + s * 0.8);
-      ctx.lineTo(this.x + s, this.y + s * 0.8);
-      ctx.closePath();
-    } else {
-      // Diamond
-      ctx.moveTo(this.x, this.y - s * 1.3);
-      ctx.lineTo(this.x + s, this.y);
-      ctx.lineTo(this.x, this.y + s * 1.3);
-      ctx.lineTo(this.x - s, this.y);
-      ctx.closePath();
-    }
-    ctx.fill();
-  };
-
-  function initParticles() {
-    resize();
-    particles = [];
-    for (var i = 0; i < particleCount; i++) particles.push(new Particle());
-  }
-
-  function drawParticles() {
-    ctx.clearRect(0, 0, W, H);
-
-    // Connection lines (angular — horizontal/vertical preference)
-    var connDist = isMobile ? 80 : 120;
-    for (var i = 0; i < particles.length; i++) {
-      for (var j = i + 1; j < particles.length; j++) {
-        var dx = particles[i].x - particles[j].x;
-        var dy = particles[i].y - particles[j].y;
-        var d = Math.sqrt(dx * dx + dy * dy);
-        if (d < connDist) {
-          var alpha = (1 - d / connDist) * 0.04;
-          ctx.strokeStyle = 'rgba(198, 169, 98, ' + alpha + ')';
-          ctx.lineWidth = 0.5;
-          ctx.beginPath();
-          // Angular connections: use L-shaped paths sometimes
-          if (Math.abs(dx) > Math.abs(dy) && Math.random() > 0.5) {
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-          } else {
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-          }
-          ctx.stroke();
-        }
-      }
-    }
-
-    // Draw particles
-    for (var k = 0; k < particles.length; k++) {
-      particles[k].update();
-      particles[k].draw();
-    }
-
-    animId = requestAnimationFrame(drawParticles);
-  }
-
-  window.addEventListener('mousemove', function(e) { mouse.x = e.clientX; mouse.y = e.clientY; });
-  window.addEventListener('touchmove', function(e) {
-    if (e.touches.length > 0) { mouse.x = e.touches[0].clientX; mouse.y = e.touches[0].clientY; }
-  }, { passive: true });
-  window.addEventListener('touchend', function() { mouse.x = -9999; mouse.y = -9999; });
-
-  var resizeTimeout;
-  window.addEventListener('resize', function() {
-    clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(function() {
-      isMobile = window.innerWidth < 768;
-      resize();
-      var newCount = isMobile ? 30 : 60;
-      if (newCount > particles.length) {
-        for (var i = particles.length; i < newCount; i++) particles.push(new Particle());
-      } else { particles.length = newCount; }
-    }, 200);
   });
 
-  document.addEventListener('visibilitychange', function() {
-    if (document.hidden) cancelAnimationFrame(animId);
-    else drawParticles();
-  });
-
-  initParticles();
-  drawParticles();
+  // ===== PARALLAX for conspiracy elements =====
+  var isMobile = window.innerWidth < 768;
+  if (!isMobile) {
+    var elements = document.querySelectorAll('.conspiracy-element');
+    var lastScroll = 0;
+    window.addEventListener('scroll', function() {
+      var scrollY = window.pageYOffset;
+      var delta = scrollY - lastScroll;
+      elements.forEach(function(el, i) {
+        var speed = 0.02 + (i % 5) * 0.008;
+        var current = parseFloat(el.dataset.drift || 0);
+        current += delta * speed;
+        el.dataset.drift = current;
+        el.style.transform = (el.style.transform || '').replace(/translateY\([^)]*\)/, '') + ' translateY(' + current + 'px)';
+      });
+      lastScroll = scrollY;
+    }, { passive: true });
+  }
 
 })();
 </script>
 
-
-<!-- AMBIENT BACKGROUND AUDIO -->
-<audio id="ambientAudio" loop preload="auto" style="display:none;">
-  <source src="ambient.wav" type="audio/wav">
-</audio>
-
-<!-- AUDIO CONTROL BUTTON -->
-<button id="audioToggle" style="
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  z-index: 9999;
-  width: 52px;
-  height: 52px;
-  border: 1px solid rgba(198,169,98,0.3);
-  background: rgba(10,10,10,0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  color: #C6A962;
-  font-size: 22px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s;
-" aria-label="Toggle audio">🔇</button>
-
-<script>
-(function() {
-  var audio = document.getElementById('ambientAudio');
-  var btn = document.getElementById('audioToggle');
-  var playing = false;
-  
-  audio.volume = 0.3;
-  
-  btn.addEventListener('click', function() {
-    if (!playing) {
-      audio.play().then(function() {
-        playing = true;
-        btn.textContent = '🔊';
-        btn.style.borderColor = 'rgba(198,169,98,0.6)';
-      }).catch(function(){});
-    } else {
-      audio.pause();
-      playing = false;
-      btn.textContent = '🔇';
-      btn.style.borderColor = 'rgba(198,169,98,0.3)';
-    }
-  });
-  
-  // Pulse hint
-  btn.style.animation = 'audioPulse 2s ease-in-out 3';
-  
-  // Try autoplay on first interaction
-  document.addEventListener('click', function firstClick() {
-    if (!playing) {
-      audio.play().then(function() {
-        playing = true;
-        btn.textContent = '🔊';
-        btn.style.borderColor = 'rgba(198,169,98,0.6)';
-      }).catch(function(){});
-    }
-    document.removeEventListener('click', firstClick);
-  }, { once: true });
-})();
-</script>
-
-<style>
-@keyframes audioPulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.1); box-shadow: 0 0 20px rgba(198,169,98,0.3); }
-}
-#audioToggle:hover {
-  border-color: rgba(198,169,98,0.6) !important;
-  transform: scale(1.05);
-}
-</style>
 </body>
 </html>
